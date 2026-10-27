@@ -110,5 +110,34 @@
         "all_five_numerical_checks_passed": true
       }
     ]
+  },
+  "shared_server_migration_verification": {
+    "recorded_on": "2026-10-27",
+    "hf_home": "/home/share",
+    "shared_root": "/home/share/fpga",
+    "model_redownloaded": false,
+    "conda_environment_recreated": false,
+    "existing_amd_installation_moved_same_filesystem": true,
+    "compatibility_symlinks_retained": true,
+    "generated_tool_settings_updated": 12,
+    "private_absolute_tool_symlinks_relocated": 60,
+    "tool_access_for_other_users": "read_and_execute_without_write",
+    "other_shared_data_access": "read_and_write",
+    "vitis_version": "2025.1",
+    "vivado_version": "2025.1",
+    "platforminfo_passed": true,
+    "hbm_clock_ip_check_passed": true,
+    "small_hls_compile_passed": true,
+    "full_qwen_bitstream_rebuilt": false,
+    "unit_tests_passed": 26,
+    "gemv_numeric_cases_passed": 5,
+    "all_shared_resource_hashes_verified": true,
+    "cpu_and_fpga_numerical_checks_passed": true,
+    "fpga_token_kernel_calls": 39,
+    "fpga_layer_evaluations": 1092,
+    "fpga_decode_tokens_per_second": 8.901046554269739,
+    "original_entry_still_operational": true,
+    "original_entry_decode_tokens_per_second": 8.930007572746533,
+    "note": "Validated on the existing account with public resource paths and all-user permission audit; not a separate-account login test."
   }
 }

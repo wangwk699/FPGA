@@ -1,0 +1,89 @@
+{
+  "schema_version": 1,
+  "model_id": "Qwen/Qwen3-0.6B",
+  "revision": "c1899de289a04d12100db370d81485cdf75e47ca",
+  "model_snapshot": "/home/share/hub/models--Qwen--Qwen3-0.6B/snapshots/c1899de289a04d12100db370d81485cdf75e47ca",
+  "platform": "/home/share/fpga/platforms/u55c/opt/xilinx/platforms/xilinx_u55c_gen3x16_xdma_3_202210_1/xilinx_u55c_gen3x16_xdma_3_202210_1.xpfm",
+  "vitis_root": "/home/share/fpga/amd",
+  "vitis_settings": "/home/share/fpga/amd/2025.1/Vitis/settings64.sh",
+  "xrt_include": "/home/share/fpga/xrt-dev/usr/include",
+  "xrt_lib": "/usr/lib/x86_64-linux-gnu/libxrt_coreutil.so.2",
+  "packed_weights": "/home/share/fpga/models/Qwen3-0.6B/tiled-bf16-v2",
+  "reference": "/home/share/fpga/reference/Qwen3-0.6B/default",
+  "xclbin": "/home/share/fpga/artifacts/qwen3-0.6b-stream/qwen_full_decode.xclbin",
+  "kernel_source_sha256": "43e2d2dcb4105d42664bd491831384ef0c38b887d21edb712eaaaa933873c880",
+  "quantized": false,
+  "source_dtype": "bfloat16",
+  "compute_dtype": "float32",
+  "checksums": {
+    "model": {
+      "path": "/home/share/hub/models--Qwen--Qwen3-0.6B/snapshots/c1899de289a04d12100db370d81485cdf75e47ca/model.safetensors",
+      "sha256": "f47f71177f32bcd101b7573ec9171e6a57f4f4d31148d38e382306f42996874b"
+    },
+    "weights": {
+      "path": "/home/share/fpga/models/Qwen3-0.6B/tiled-bf16-v2/weights.bin",
+      "sha256": "8ccd3d1534df6559143c08dbdf5f72f8fae97b59fe4167af0294c8743fe1bdfc"
+    },
+    "offsets": {
+      "path": "/home/share/fpga/models/Qwen3-0.6B/tiled-bf16-v2/offsets.bin",
+      "sha256": "d62d70eaa4ff2f198e558c1167c15b70cbd22e2451758677ad8e73abc688f5e6"
+    },
+    "inv_freq": {
+      "path": "/home/share/fpga/models/Qwen3-0.6B/tiled-bf16-v2/inv_freq.bin",
+      "sha256": "138c99b109d7affbfba059e435670918fe4531bce4709b6e86f3f22f7ef80f6e"
+    },
+    "xclbin": {
+      "path": "/home/share/fpga/artifacts/qwen3-0.6b-stream/qwen_full_decode.xclbin",
+      "sha256": "bd72c2fa433377e6d8e3e6841709c5fdc2658e93891427c2740575ebbabef531"
+    },
+    "reference_json": {
+      "path": "/home/share/fpga/reference/Qwen3-0.6B/default/reference.json",
+      "sha256": "db357bb56aeee8684479b1639939a2f23476a8a74479ab657817c53a97a12698"
+    },
+    "reference_vectors": {
+      "path": "/home/share/fpga/reference/Qwen3-0.6B/default/vectors.npz",
+      "sha256": "b5edcae460bf224e42863eb7f4c88003c35d94a1b2059d553cdc5c00aa898889"
+    },
+    "platform": {
+      "path": "/home/share/fpga/platforms/u55c/opt/xilinx/platforms/xilinx_u55c_gen3x16_xdma_3_202210_1/xilinx_u55c_gen3x16_xdma_3_202210_1.xpfm",
+      "sha256": "3bd94fe7919d4365baf24f7add386fd9eb957835c0f1e08aaff9b44ab90ed31d"
+    },
+    "vitis_settings": {
+      "path": "/home/share/fpga/amd/2025.1/Vitis/settings64.sh",
+      "sha256": "78b2d7f5341057ebae953476a6d5c63d37a8580bb3c7fd1b13bcb90852656b80"
+    },
+    "download:FPGAs_AdaptiveSoCs_Unified_SDI_2025.1_0530_0145_Lin64.bin": {
+      "path": "/home/share/fpga/downloads/FPGAs_AdaptiveSoCs_Unified_SDI_2025.1_0530_0145_Lin64.bin",
+      "sha256": "bcaa733893e45e33b66908d98a5e52d7e4fe408c2e09a25482a9ab6fbaa23763"
+    },
+    "download:libxrt-dev_1%3a2.21.75+dfsg-4_amd64.deb": {
+      "path": "/home/share/fpga/downloads/libxrt-dev_1%3a2.21.75+dfsg-4_amd64.deb",
+      "sha256": "2932df269c3cf20d606b4cab2427a2279c09ea36ef64d66212986baf9bc129b1"
+    },
+    "download:u55c-deployment.tar.gz": {
+      "path": "/home/share/fpga/downloads/u55c-deployment.tar.gz",
+      "sha256": "16277ede60a1929306a7866f67c14dbbd09525734113034ab551a1225da0cc9f"
+    },
+    "download:uuid-dev_2.41.3-3ubuntu2.2_amd64.deb": {
+      "path": "/home/share/fpga/downloads/uuid-dev_2.41.3-3ubuntu2.2_amd64.deb",
+      "sha256": "0ba791f89888491857c69ad3d59d8517d4926eae0c242f213579fc59ea0b5e94"
+    },
+    "download:xilinx-u55c-gen3x16-xdma-3-202210-1-dev_1-3514517_all.deb": {
+      "path": "/home/share/fpga/downloads/xilinx-u55c-gen3x16-xdma-3-202210-1-dev_1-3514517_all.deb",
+      "sha256": "6a3e45f290d64ebe0fc188d197ae430bd1baf5e6b4129f4fd55e0d82c715bdae"
+    }
+  },
+  "existing_bitstream_signoff": {
+    "checked_at": "2026-10-27T17:12:32+08:00",
+    "all_user_timing_constraints_met": true,
+    "setup_failing_endpoints": 0,
+    "hold_failing_endpoints": 0,
+    "pulse_width_failing_endpoints": 0,
+    "wns_ns": 0.003,
+    "whs_ns": 0.009,
+    "bus_constraints_checked": 116,
+    "bus_failing_constraints": 0,
+    "minimum_bus_slack_ns": 1.538,
+    "xclbin_sha256": "bd72c2fa433377e6d8e3e6841709c5fdc2658e93891427c2740575ebbabef531"
+  }
+}

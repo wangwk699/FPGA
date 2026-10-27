@@ -1,8 +1,25 @@
 # FPGA：Qwen3-0.6B 在 Alveo U55C 上从零部署与 GitHub 发布指南
 
-记录日期：2026-10-27。项目仓库：[wangwk699/FPGA](https://github.com/wangwk699/FPGA)。同服务器且家目录隔离的用户优先按 [独立用户部署清单](ISOLATED-USER-CHECKLIST.md) 操作。面向拿到本工程源码、原始模型和一张 U55C 的合作者。
+记录日期：2026-10-27。项目仓库：[wangwk699/FPGA](https://github.com/wangwk699/FPGA)。同服务器用户已使用 `/home/share` 和已有 `llm` 环境，优先按 [共享资源部署清单](ISOLATED-USER-CHECKLIST.md) 操作。面向拿到本工程源码、原始模型和一张 U55C 的合作者。
 
 本文以已经实机验证的 `full-decode-stream/` 为部署主线，同时记录这次从硬件检查、工具安装到完整 Decoder 和两轮优化的过程。新机器可以直接构建最新版，不必依次编译历史版本。
+
+## 0. 本服务器已完成共享准备，先走复用入口
+
+本服务器所有用户已将 `HF_HOME` 设为 `/home/share`，已有 Python 3.11 的 `llm` 环境。模型不用重下，Conda 不用重装或重建；Vitis/Vivado 2025.1、U55C 平台、XRT 开发头文件、安装包、打包权重、参考数据和已签核位流已经统一放入 `/home/share/fpga`。
+
+在自己的源码目录执行：
+
+```bash
+conda activate llm
+python scripts/check_python_environment.py
+python scripts/use_shared_resources.py
+make -C full-decode-stream runtime-cpu runtime-fpga
+./full-decode-stream/run_full.sh --backend cpu-cpp --verify full-decode-stream/reference/default --report full-decode-stream/reports/full-cpp-validation.json
+./full-decode-stream/run_full.sh --backend fpga --verify full-decode-stream/reference/default --report full-decode-stream/reports/full-fpga.json
+```
+
+运行 FPGA 前约定板卡独占时段。这一路径不调用模型下载或 AMD 安装器，不复制模型/工具，不重新综合电路。逐项说明和确切路径见 [共享资源部署清单](ISOLATED-USER-CHECKLIST.md)。若要自行重编译，仍可使用共享依赖，编译产物保留个人目录。下面下载、安装部分保留为“另一台尚未配置服务器”的完整记录，不是本服务器每名新用户要重复执行的步骤。
 
 ## 1. 最终要部署什么
 
@@ -46,7 +63,7 @@ KV Cache 一直启用：每层保存 RoPE 后的 K 和投影后的 V，新增 to
 | 第一轮优化 | 512 位权重读取、32 路 BF16→FP32 乘法、16 路交错累加 | `full-decode-fast/`；**2.737 token/s** |
 | 第二轮优化 | 16 行×32 列权重布局、多行交错 MAC、配对 Q head 复用 K/V、32 路 Attention | 当前 `full-decode-stream/`；**8.898 token/s**，约 0.1124 秒/token |
 
-最后两次加速都重新完成了数值、真实板卡执行、位流身份和布线时序验证。历史摘要可提交到 GitHub，见 [evidence/benchmark-summary.json](evidence/benchmark-summary.json)。原机各版本 `reports/` 保存更完整的日志和报告，源码发布包不包含这些原始产物。
+最后两次加速都重新完成了数值、真实板卡执行、位流身份和布线时序验证。历史摘要可提交到 GitHub，见 [evidence/benchmark-summary.json](evidence/benchmark-summary.json)。原机各版本 `reports/` 保存更完整的日志和报告，源码发布包不包含这些原始产物。共享迁移验证摘要也记录在同一 evidence 文件中。
 
 当前位流的原机布线签核为 WNS +0.003ns、WHS +0.009ns，setup/hold/pulse-width 失败端点均为 0，116 条 bus-skew 约束全部通过。新构建也必须检查自己的实际签核结果。
 
@@ -81,7 +98,7 @@ KV Cache 一直启用：每层保存 RoPE 后的 K 和投影后的 V，新增 to
 
 合作者的 BDF、用户名和目录可能完全不同。应填写自己的本机配置，不要直接复制原机 `deployment.json`。
 
-## 4. 下载清单
+## 4. 下载清单（新服务器；本服务器使用已有共享文件）
 
 | 需要下载的内容 | 来源与用途 | 是否放进 GitHub |
 | --- | --- | --- |
@@ -104,7 +121,7 @@ xilinx-u55c-gen3x16-xdma-3-202210-1-dev_1-3514517_all.deb
 
 本方案使用自定义 HLS 内核和 XRT，不需要下载 Vitis AI/DPU、量化模型或 CUDA 工具包。AMD 工具下载需要 AMD 账号；公开的 Qwen3-0.6B 模型下载无需预先登录 Hugging Face。
 
-## 5. 获取源码、检查板卡、创建 Python 环境
+## 5. 获取源码、检查板卡和 Python 环境
 
 以下命令是给合作者执行的操作步骤。尖括号内容替换成实际仓库地址；所有命令默认在仓库根目录运行。仓库、AMD 工具及平台路径尽量不要有空格。
 
@@ -151,25 +168,15 @@ xrt-smi examine -d "$QWEN_DEVICE"
 
 某些 XRT 版本使用 `xbutil` 名称，改为 `xbutil examine -d "$QWEN_DEVICE"`。确认板卡健康、HBM 可见、shell/interface 与开发平台匹配。板卡访问权限由管理员按 XRT 安装要求配置。本工程加载用户 `.xclbin`；若新卡还没有可用的基础 shell，应先由管理员按 U55C 官方部署文档完成这一独立步骤。
 
-创建 Python 环境可选 Conda：
+本服务器所有用户已经安装 Miniconda 并创建 Python 3.11 的 `llm` 环境，直接：
 
 ```bash
-conda create -n qwen-u55c python=3.11 pip -y
-conda activate qwen-u55c
-python -m pip install -r requirements-reproduce.txt
+conda activate llm
 export QWEN_PYTHON="$(command -v python)"
+python scripts/check_python_environment.py
 ```
 
-或者使用已安装的 Python 3.11：
-
-```bash
-python3.11 -m venv .venv
-source .venv/bin/activate
-python -m pip install -r requirements-reproduce.txt
-export QWEN_PYTHON="$(command -v python)"
-```
-
-二选一即可。Conda 不是下载模型的前提，也不是 FPGA 必需组件。固定依赖版本取自本次成功环境；PyTorch 只用于 CPU 参考和准备工具，CPU 版满足需要。依赖安装可能下载较大的 Torch wheel，与 AMD 工具下载是两件事。
+脚本只检查，不重装已有依赖；缺包或版本不同才按输出补齐。Torch 用于 CPU 参考，CPU 版即可，不要求 GPU/CUDA。另一台全新服务器需先自行准备 Python 3.11 环境，然后安装 `requirements-reproduce.txt`。
 
 ## 6. 准备原始模型
 
@@ -185,16 +192,16 @@ export QWEN_MODEL=/home/share/hub/models--Qwen--Qwen3-0.6B/snapshots/c1899de289a
 
 ### 6.2 尚未下载时
 
-个人缓存可设置 `HF_HOME="$HOME/.cache/huggingface"`。若多人共用 `/home/.cache/huggingface`，使用已由管理员配置好的共享组、目录权限和默认 ACL：
+本服务器统一使用 `/home/share`，原始模型已存在，无需重复下载。下面下载命令仅用于另一台服务器或确实需要新增模型；共享位置已由管理员设置权限：
 
 ```bash
-export HF_HOME=/home/.cache/huggingface
+export HF_HOME=/home/share
 export HF_XET_HIGH_PERFORMANCE=1
 # 使用镜像时再设置；访问官方源可省略这一行
 export HF_ENDPOINT=https://hf-mirror.com
 ```
 
-仅设置变量不会授予目录写权限。管理员已配置共享组后，新会话需重新登录以取得新组；用 `id`、`getfacl /home/.cache/huggingface`、`test -w /home/.cache/huggingface` 检查。所有上级目录也要允许遍历。多人缓存内的已有文件及 `.locks` 也要可供组写，新建用户还需加入共享组；不必为下载给整个 `/home` 设置任意写权限。
+仅设置变量不会授予目录写权限。管理员已配置共享组后，新会话需重新登录以取得新组；用 `id`、`getfacl /home/share`、`test -w /home/share` 检查。所有上级目录也要允许遍历。多人缓存内的已有文件及 `.locks` 也要可供组写，新建用户还需加入共享组；不必为下载给整个 `/home` 设置任意写权限。
 
 `HF_XET_HIGH_PERFORMANCE` 对应 **hf-xet**，不是 `hf_transfer`。`HF_HOME` 下默认的模型仓库缓存是 `hub/`；配置应在 Python 导入 Hub 库前生效。见 [Hub 环境变量说明](https://huggingface.co/docs/huggingface_hub/package_reference/environment_variables)。公开模型无需在共享目录保存个人登录令牌。
 
@@ -227,7 +234,7 @@ f47f71177f32bcd101b7573ec9171e6a57f4f4d31148d38e382306f42996874b
 
 若哈希不同，先确认 revision、文件是否完整及来源，不应直接沿用本次数值结论。
 
-## 7. 导入开发平台，生成本机配置
+## 7. 导入开发平台，生成本机配置（本服务器由共享脚本完成）
 
 将第 4 节的两个 AMD 下载文件放入仓库 `installers/`。先解包 U55C 开发平台：
 
@@ -268,9 +275,9 @@ config/vitis-2025.1.local.txt         本机 AMD 安装器配置
 
 `--xrt-include` 指向包含 `xrt/xrt_device.h` 的目录；`--xrt-lib` 指向库文件。Makefile 可自动识别常见 `/opt/xilinx/xrt/`、`/usr/include` 和项目 `.deps/xrt-dev/usr/include`。已有 Vitis 的机器也可在配置时加 `--vitis-settings /实际路径/settings64.sh`，随后跳过安装。
 
-## 8. 安装 Vitis/Vivado 2025.1
+## 8. 安装 Vitis/Vivado 2025.1（新服务器才需要）
 
-已有可用 2025.1 工具及 U55C/HBM 器件支持时，直接进入第 8.3 节。
+本服务器统一使用 `/home/share/fpga/amd/2025.1`，不用重新安装或 AMD 登录。共享启动脚本已修正安装路径，原有 HBM 组件及 libtinfo 兼容修复保持有效。以下安装过程仅供新服务器或维护者参考。
 
 ### 8.1 解出网络安装器并认证
 
@@ -336,9 +343,9 @@ vivado -nolog -nojournal -mode batch -source scripts/check_u55c_clock.tcl
 
 日志中的 `U55C_CLOCK_IP_CREATED` 是检查成功标志。若报 `libtinfo.so.5` 或时钟参数缺失，按第 14 节排查后再编译模型电路。
 
-## 9. 为当前内核打包权重，并生成独立 CPU 参考
+## 9. 为当前内核打包权重，并生成独立 CPU 参考（已有共享数据可跳过生成）
 
-确认处于正确 Python 环境。`run_full.sh` 优先使用 `QWEN_PYTHON`，其次使用 `deployment.json` 中的 Python 路径，最后才使用 PATH 中的 `python3`。
+本服务器的共享脚本会链接已校验的权重和参考，以下 pack/reference 生成命令不必重复执行；直接编译主机库并做数值比较即可。确认处于正确 Python 环境。`run_full.sh` 优先使用 `QWEN_PYTHON`，其次使用 `deployment.json` 中的 Python 路径，最后才使用 PATH 中的 `python3`。
 
 ### 9.1 原始 checkpoint → 当前无损权重布局
 
@@ -391,7 +398,7 @@ python full-decode-stream/scripts/make_reference.py
 make test
 ```
 
-本次为 23 项单元测试与 5 组 GEMV 数值测试全部通过。
+原始部署有 23 项单元测试；当前增加共享文件误改与个人数据保护检查，共 26 项单元测试及 5 组 GEMV 数值测试通过。
 
 ## 10. 构建 FPGA 电路，并完成实机验收
 
@@ -611,6 +618,7 @@ FPGA/
 ├── .gitignore
 ├── config/
 │   ├── deployment.example.json
+│   ├── shared-server.example.json     当前服务器共享路径与固定哈希
 │   ├── vitis-2025.1.example.txt
 │   ├── local.mk                      本机
 │   └── vitis-2025.1.local.txt         本机
@@ -645,7 +653,7 @@ HLS 算法与 C++ 主机计算代码保持不变，本次未为文档重新综�
 
 ## 17. 用干净源码目录创建 GitHub 仓库
 
-原工作目录约 11GB，大部分是下载、模型、IP 缓存和构建产物。为避免把它们误加进首次提交，已经提供白名单导出脚本：
+原工作目录中的下载、模型和工具已迁入共享目录，个人 IP 缓存和构建产物仍不应提交 Git。为避免把它们误加进首次提交，已经提供白名单导出脚本：
 
 ```bash
 python scripts/export_github.py
@@ -676,7 +684,7 @@ git push -u origin main
 
 执行提交前检查暂存列表，应该只有源码、文档、配置模板和摘要，没有 `.deb`、`.xclbin`、模型或 `deployment.json`。本次准备工作没有替你选择源码开源许可证；公开发布前应由代码权利人确定合适的 `LICENSE`，并保留依赖和厂商代码的原始声明。模型、AMD 软件的许可证与自己的源码许可证分别适用。
 
-仓库地址已确定为 `wangwk699/FPGA`；本节命令用于以后自行提交更新。发布仅包含白名单源码，原部署工作目录、模型与已验证位流继续保留。
+仓库地址已确定为 `wangwk699/FPGA`；本节命令用于以后自行提交更新。发布仅包含白名单源码，原部署工作目录保留兼容链接，模型、工具与已验证位流使用共享资源。
 
 ## 18. 复现闭环与本次发布准备的验证边界
 

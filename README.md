@@ -2,9 +2,9 @@
 
 Qwen3-0.6B / Alveo U55C 浮点部署工程。
 
-**同服务器、家目录完全隔离的用户请先按 [独立用户部署清单](docs/ISOLATED-USER-CHECKLIST.md) 操作。**
+**同服务器用户复用 `/home/share` 的模型、AMD 工具、平台及位流，激活已有 `llm` 环境后按 [共享资源部署清单](docs/ISOLATED-USER-CHECKLIST.md) 操作。**
 
-**完整从零复现说明：[从零部署与 GitHub 发布指南](docs/FROM-ZERO-TO-GITHUB.md)。** 包含全部下载项、环境安装、权重准备、软硬件验证、常见故障、源码清单及上传方式。当前主线为 `full-decode-stream/`；历史测量摘要见 [benchmark-summary.json](docs/evidence/benchmark-summary.json)。源码发布包不包含本机 `reports/`、模型和位流，文中这些历史产物链接需在原部署机器查看或自行重建。
+**完整从零复现说明：[从零部署与 GitHub 发布指南](docs/FROM-ZERO-TO-GITHUB.md)。** 包含全部下载项、环境安装、权重准备、软硬件验证、常见故障、源码清单及上传方式。当前主线为 `full-decode-stream/`；共享路径及固定哈希见 `config/shared-server.example.json`；历史测量摘要见 [benchmark-summary.json](docs/evidence/benchmark-summary.json)。源码发布包不包含本机 `reports/`、模型和位流，文中这些历史产物链接需在原部署机器查看或自行重建。
 
 **完整 FPGA Decode 已于 2026-10-27 实机验证通过**：28 层的 RMSNorm、QKV/QK Norm、RoPE、完整 Attention、KV cache、MLP、残差以及 embedding/输出投影/argmax 均在 U55C 执行。CPU 负责分词、加载和调度；模型不量化，层间激活与 KV 不回传 CPU 参与计算。22 个生成 token 与 PyTorch 参考完全一致，39 次完整内核调用覆盖 1,092 次层计算，五组层输出/logits 数值检查全部通过。
 
@@ -99,7 +99,7 @@ make runtime
 
 ```bash
 cd "$HOME/FPGA"
-source "$HOME/amd/2025.1/Vitis/settings64.sh"
+source /home/share/fpga/amd/2025.1/Vitis/settings64.sh
 make kernel
 ./build/gemv_probe build/hw/qwen_gemv.xclbin 0000:01:00.1
 ```

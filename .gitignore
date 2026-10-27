@@ -1,7 +1,7 @@
 .deps/
 .venv/
 models/
-weights/
+weights
 build/
 __pycache__/
 *.xo
@@ -10,7 +10,7 @@ _x/
 .Xil/
 installers/
 platforms/
-reference/
+reference
 .ipcache/
 .srcs/
 reports/

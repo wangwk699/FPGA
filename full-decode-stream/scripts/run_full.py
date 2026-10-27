@@ -24,17 +24,25 @@ def main():
     parser.add_argument("--prompt", default="请用一句话介绍杭州。")
     parser.add_argument("--max-new-tokens", type=int, default=32)
     parser.add_argument("--weights", type=Path, default=PROJECT / "weights")
-    parser.add_argument("--xclbin", type=Path, default=PROJECT / "build/hw/qwen_full_decode.xclbin")
+    parser.add_argument("--xclbin", type=Path, help="Local bitstream, or the configured shared bitstream when no local build exists")
     parser.add_argument("--verify", type=Path)
     parser.add_argument("--report", type=Path)
     args = parser.parse_args()
+    deployment = json.loads((PROJECT.parent / "deployment.json").read_text())
+    shared = deployment.get("shared_resources", {})
+    if args.xclbin is None:
+        local = PROJECT / "build/hw/qwen_full_decode.xclbin"
+        args.xclbin = local if local.is_file() else Path(shared.get("xclbin", str(local)))
     if args.max_new_tokens < 1:
         parser.error("max-new-tokens must be positive")
     if args.backend == "fpga" and (not args.xclbin.is_file() or os.environ.get("XCL_EMULATION_MODE")):
         parser.error("A real full-decoder xclbin is required; unset XCL_EMULATION_MODE")
+    if (args.backend == "fpga" and shared.get("xclbin")
+            and args.xclbin.resolve() == Path(shared["xclbin"]).resolve()
+            and hashlib.sha256(args.xclbin.read_bytes()).hexdigest() != shared["xclbin_sha256"]):
+        parser.error("Shared bitstream SHA256 differs from the configured verified artifact")
     from transformers import AutoTokenizer
     from full_runtime import FullRuntime
-    deployment = json.loads((PROJECT.parent / "deployment.json").read_text())
     tokenizer = AutoTokenizer.from_pretrained(deployment["model_snapshot"], local_files_only=True)
     text = tokenizer.apply_chat_template([{"role": "user", "content": args.prompt}],
         tokenize=False, add_generation_prompt=True, enable_thinking=False)

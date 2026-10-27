@@ -2,8 +2,8 @@
   "files": [
     {
       "path": ".gitignore",
-      "bytes": 387,
-      "sha256": "a334db114a810bdde35b1c51bfeccc3f7949ba342bfd8bda578fb34921a8e3a9"
+      "bytes": 385,
+      "sha256": "24121735ce85f9380fbd75583c86a630bbcfe395c6831fbb9d5a5f4f053748ec"
     },
     {
       "path": "Makefile",
@@ -12,13 +12,18 @@
     },
     {
       "path": "README.md",
-      "bytes": 10707,
-      "sha256": "ac6403f65a09dd70a3d4d3da5404cc3d4ef38243cf87b8a69eb2dbece3ad5208"
+      "bytes": 10844,
+      "sha256": "abde59a8e34b19d9f8bc82dc414c236ef84b7a589899a3868b7a9f3f24f4d1a6"
     },
     {
       "path": "config/deployment.example.json",
       "bytes": 572,
       "sha256": "c2f0c6ddf1d276fe141a96a261e4a2bfb93889b7bbce5acab37ced8ab69fd3be"
+    },
+    {
+      "path": "config/shared-server.example.json",
+      "bytes": 4491,
+      "sha256": "9ddab32aac03304b802c43c787dc35613f9908ca3bc59841dc64d92455d5c387"
     },
     {
       "path": "config/vitis-2025.1.example.txt",
@@ -27,8 +32,8 @@
     },
     {
       "path": "docs/FROM-ZERO-TO-GITHUB.md",
-      "bytes": 43859,
-      "sha256": "aed07c38d265987d0fb11e1c8d392288281088dd825f825e2027682dcb2b2846"
+      "bytes": 45795,
+      "sha256": "ba02cf2a62421866a946ab5dfadcaf4a99eced44bbbbda739f8e4aa5a87fcb82"
     },
     {
       "path": "docs/INSTALL-FPGA-TOOLS.md",
@@ -37,13 +42,13 @@
     },
     {
       "path": "docs/ISOLATED-USER-CHECKLIST.md",
-      "bytes": 11441,
-      "sha256": "07ddc4f5a4b59b24992f1b4d6e536d621ac0137cc696d2952f66dd9ba04cd95b"
+      "bytes": 7881,
+      "sha256": "944cb1fec1af7aedb452aeb674f6881fc2886f9268dd04d9a08edfb70357bbf5"
     },
     {
       "path": "docs/evidence/benchmark-summary.json",
-      "bytes": 4650,
-      "sha256": "2985c7ffacd2792611a870824093aaa049941aec61c58914bc14c08822687cff"
+      "bytes": 5955,
+      "sha256": "3182c8990899ad6a940dd7e127836d7eb611310a3642c403f74f4bdffa5a772e"
     },
     {
       "path": "full-decode/Makefile",
@@ -232,8 +237,8 @@
     },
     {
       "path": "full-decode-stream/scripts/run_full.py",
-      "bytes": 8745,
-      "sha256": "eff9eb25544d4bd5e0af9a7bff17330b2b7a026703aba83e29fda54e79f3cb27"
+      "bytes": 9332,
+      "sha256": "ed15445c3d8b043874b2931cf93b2433c92b97bdaeece2f57ae2153419c1565a"
     },
     {
       "path": "full-decode-stream/scripts/status.py",
@@ -306,6 +311,11 @@
       "sha256": "5325bfa9fa2f6dd8b92f98d0c1c614229f2a16c703bd10f34ab1804aa2236a49"
     },
     {
+      "path": "scripts/check_python_environment.py",
+      "bytes": 1243,
+      "sha256": "00db72f0383f51d26fef552e9849b8ad459942350447a02999005ecc4be7c4e8"
+    },
+    {
       "path": "scripts/check_routed_bus_skew.tcl",
       "bytes": 437,
       "sha256": "a05c8d08e2db6c4a60a20c8d5ccf757ca3d291bbd6a458e8d4ffe3fcc4a44c39"
@@ -356,6 +366,11 @@
       "sha256": "02d172355a8873967ad143eeee9335bc737c9061c0655dd166e09de575c659af"
     },
     {
+      "path": "scripts/publish_shared_resources.py",
+      "bytes": 8311,
+      "sha256": "a0904b149b200fe51e9d1e1d8aac1c1278bae70a191d71a48484e7dcfe243e15"
+    },
+    {
       "path": "scripts/python_exec.sh",
       "bytes": 442,
       "sha256": "5871b519eed1d8430104c20350c3e20ff725a0be0f8b08c1d31a29686b19e81b"
@@ -369,6 +384,11 @@
       "path": "scripts/setup_vitis.sh",
       "bytes": 1818,
       "sha256": "09b5f3363afab39cbe82b8ef693248866e39610006546ae4e1abc81e106b3daa"
+    },
+    {
+      "path": "scripts/use_shared_resources.py",
+      "bytes": 3610,
+      "sha256": "94ff45e54b4ead3a05798ff372decc3d887126ae1f8b7fdfe28f0399d8064995"
     },
     {
       "path": "scripts/use_vendor_clock_adapter.py",
@@ -396,6 +416,11 @@
       "sha256": "e90788c814d369c1ce21b096135b0dfda70944667e2b17cdeaf6fd614b31210f"
     },
     {
+      "path": "tests/shared_toolchain_probe.cpp",
+      "bytes": 652,
+      "sha256": "21686925a421125fc76aaf104e2e3d1249d4461ae4a270b00cc807e9aab9ffc5"
+    },
+    {
       "path": "tests/test_auto_deploy.py",
       "bytes": 5300,
       "sha256": "d47a5c4d9231b9335abb6c804944670763ae4eaee177fa62cb24491d3d8da42b"
@@ -409,6 +434,11 @@
       "path": "tests/test_native_runtime.py",
       "bytes": 2783,
       "sha256": "2ff8f23a430c328a9f6d639bdb9cb4c700ed35982d6c53ed9e19464d351d4754"
+    },
+    {
+      "path": "tests/test_shared_resources.py",
+      "bytes": 4546,
+      "sha256": "85875f09e62ac054cc488cd8ebfaf86dad605c9c9d25e8b4504365168f328b20"
     }
   ]
 }
