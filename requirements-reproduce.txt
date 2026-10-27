@@ -1,0 +1,8 @@
+# Versions installed for the recorded end-to-end verification (Python 3.11).
+# A CPU build of torch is sufficient for reference generation; CUDA is not required.
+torch==2.14.1
+transformers==5.20.2
+numpy==2.4.6
+safetensors==0.8.0
+tokenizers==0.23.3
+huggingface_hub==2.3.0

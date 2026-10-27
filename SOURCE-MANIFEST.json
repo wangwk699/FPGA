@@ -1,0 +1,414 @@
+{
+  "files": [
+    {
+      "path": ".gitignore",
+      "bytes": 387,
+      "sha256": "a334db114a810bdde35b1c51bfeccc3f7949ba342bfd8bda578fb34921a8e3a9"
+    },
+    {
+      "path": "Makefile",
+      "bytes": 2647,
+      "sha256": "481f37d46648ae1dbca840382129d4d74f88d73b8c595e08a6a587c34b811345"
+    },
+    {
+      "path": "README.md",
+      "bytes": 10707,
+      "sha256": "ac6403f65a09dd70a3d4d3da5404cc3d4ef38243cf87b8a69eb2dbece3ad5208"
+    },
+    {
+      "path": "config/deployment.example.json",
+      "bytes": 572,
+      "sha256": "c2f0c6ddf1d276fe141a96a261e4a2bfb93889b7bbce5acab37ced8ab69fd3be"
+    },
+    {
+      "path": "config/vitis-2025.1.example.txt",
+      "bytes": 2633,
+      "sha256": "befe810cf88bf3476f893f89b7d5b6604456b122302c119f377816c98b62ec3c"
+    },
+    {
+      "path": "docs/FROM-ZERO-TO-GITHUB.md",
+      "bytes": 43859,
+      "sha256": "aed07c38d265987d0fb11e1c8d392288281088dd825f825e2027682dcb2b2846"
+    },
+    {
+      "path": "docs/INSTALL-FPGA-TOOLS.md",
+      "bytes": 10906,
+      "sha256": "f95e817e39a76df4e4b8a50b2f981fc60054b994e2f0a3cf0be8cb6b6a98edde"
+    },
+    {
+      "path": "docs/ISOLATED-USER-CHECKLIST.md",
+      "bytes": 11441,
+      "sha256": "07ddc4f5a4b59b24992f1b4d6e536d621ac0137cc696d2952f66dd9ba04cd95b"
+    },
+    {
+      "path": "docs/evidence/benchmark-summary.json",
+      "bytes": 4650,
+      "sha256": "2985c7ffacd2792611a870824093aaa049941aec61c58914bc14c08822687cff"
+    },
+    {
+      "path": "full-decode/Makefile",
+      "bytes": 2084,
+      "sha256": "c679e6daa5e032ab873126bcb5dd462c22531b667ca0283ee7c8349ad4b323d0"
+    },
+    {
+      "path": "full-decode/README.md",
+      "bytes": 5669,
+      "sha256": "950429a5576a89b65cb901046ba6a0ebc18dd68b01588fb63a4f638711ce197c"
+    },
+    {
+      "path": "full-decode/hls/connectivity.cfg",
+      "bytes": 315,
+      "sha256": "42106572802ba2365bc0e3d3abaf46f6082d39d6033bb82789041a844b84b3fc"
+    },
+    {
+      "path": "full-decode/hls/full_decode.cpp",
+      "bytes": 10279,
+      "sha256": "8d838e2587e7bef1737d003f44f7be62447ce26f03f7feddd4bba39d9b4447db"
+    },
+    {
+      "path": "full-decode/hls/full_decode.hpp",
+      "bytes": 1338,
+      "sha256": "6012fda7a0a8339f86e84f724eae189bbc2d76e1203467555c7b4418e20ff87b"
+    },
+    {
+      "path": "full-decode/host/full_runtime.cpp",
+      "bytes": 8017,
+      "sha256": "cd8c63829761c93eabf25f9fe2e08607d394d2b689b54017a0aada42ba93c1d6"
+    },
+    {
+      "path": "full-decode/run_full.sh",
+      "bytes": 196,
+      "sha256": "5dfff1b0c1a5f6512d6e1f167ac0d02964dbde16648a81d29d5669c7a6242cab"
+    },
+    {
+      "path": "full-decode/scripts/deploy_full.py",
+      "bytes": 12588,
+      "sha256": "8bead0f4803eafac26a3dd47d694453639c4a8319834dcb3d79437074b5a7e63"
+    },
+    {
+      "path": "full-decode/scripts/full_runtime.py",
+      "bytes": 4042,
+      "sha256": "d474cd49a2c500f629011e33f8e071e3ef013db661579538e12fe3d53a0344e4"
+    },
+    {
+      "path": "full-decode/scripts/make_reference.py",
+      "bytes": 4066,
+      "sha256": "61e7785651c3879c17c8528f1f539fca147c53cd3e5886753dff0ad1033831b6"
+    },
+    {
+      "path": "full-decode/scripts/pack_weights.py",
+      "bytes": 5230,
+      "sha256": "142174a6a37ee1f9265b83c2f5e92a4517d232f228cba760f60e9a83893685ec"
+    },
+    {
+      "path": "full-decode/scripts/run_full.py",
+      "bytes": 8745,
+      "sha256": "eff9eb25544d4bd5e0af9a7bff17330b2b7a026703aba83e29fda54e79f3cb27"
+    },
+    {
+      "path": "full-decode/scripts/status.py",
+      "bytes": 2864,
+      "sha256": "07346e8d7224fc49aba729d285941fa7487cb958243b3eb1ac02af7a766dc256"
+    },
+    {
+      "path": "full-decode-fast/Makefile",
+      "bytes": 2084,
+      "sha256": "c679e6daa5e032ab873126bcb5dd462c22531b667ca0283ee7c8349ad4b323d0"
+    },
+    {
+      "path": "full-decode-fast/README.md",
+      "bytes": 4808,
+      "sha256": "f5949c46c6ba3ca98d1cee25f3127be5757d587568e5b28883c1e82a17e45903"
+    },
+    {
+      "path": "full-decode-fast/hls/connectivity.cfg",
+      "bytes": 315,
+      "sha256": "42106572802ba2365bc0e3d3abaf46f6082d39d6033bb82789041a844b84b3fc"
+    },
+    {
+      "path": "full-decode-fast/hls/full_decode.cpp",
+      "bytes": 12670,
+      "sha256": "767ea2f1844e380cc023a581d2e9003779f4bff6e134097e126711fe00cf6614"
+    },
+    {
+      "path": "full-decode-fast/hls/full_decode.hpp",
+      "bytes": 1572,
+      "sha256": "f73fee3a39d569ebaae115c55b4b238a70e4ac3100495f44bf27bb5e02e12de7"
+    },
+    {
+      "path": "full-decode-fast/host/full_runtime.cpp",
+      "bytes": 8058,
+      "sha256": "79ee9adff168931261ae88fdc259af46f9f8d1f85395392eeda252d2e9e46ad3"
+    },
+    {
+      "path": "full-decode-fast/run_full.sh",
+      "bytes": 196,
+      "sha256": "5dfff1b0c1a5f6512d6e1f167ac0d02964dbde16648a81d29d5669c7a6242cab"
+    },
+    {
+      "path": "full-decode-fast/scripts/deploy_full.py",
+      "bytes": 15647,
+      "sha256": "7066f0fa7b6b9f81f3f9a4fcec6c7a334d2e0c6d14d1fbdabed619e6f87653ae"
+    },
+    {
+      "path": "full-decode-fast/scripts/full_runtime.py",
+      "bytes": 4042,
+      "sha256": "d474cd49a2c500f629011e33f8e071e3ef013db661579538e12fe3d53a0344e4"
+    },
+    {
+      "path": "full-decode-fast/scripts/make_reference.py",
+      "bytes": 4066,
+      "sha256": "61e7785651c3879c17c8528f1f539fca147c53cd3e5886753dff0ad1033831b6"
+    },
+    {
+      "path": "full-decode-fast/scripts/pack_weights.py",
+      "bytes": 5230,
+      "sha256": "142174a6a37ee1f9265b83c2f5e92a4517d232f228cba760f60e9a83893685ec"
+    },
+    {
+      "path": "full-decode-fast/scripts/run_full.py",
+      "bytes": 8745,
+      "sha256": "eff9eb25544d4bd5e0af9a7bff17330b2b7a026703aba83e29fda54e79f3cb27"
+    },
+    {
+      "path": "full-decode-fast/scripts/status.py",
+      "bytes": 3103,
+      "sha256": "8cf952bb19fd865470f5c4d0ed9d4f9e3449a524ce833badf83a88988cb75eca"
+    },
+    {
+      "path": "full-decode-stream/Makefile",
+      "bytes": 2084,
+      "sha256": "c679e6daa5e032ab873126bcb5dd462c22531b667ca0283ee7c8349ad4b323d0"
+    },
+    {
+      "path": "full-decode-stream/README.md",
+      "bytes": 3542,
+      "sha256": "1ca8066ea54abc4d2eb12eb7621087d8b04237d5cc46f2a0161a5cba653e29f9"
+    },
+    {
+      "path": "full-decode-stream/hls/connectivity.cfg",
+      "bytes": 315,
+      "sha256": "42106572802ba2365bc0e3d3abaf46f6082d39d6033bb82789041a844b84b3fc"
+    },
+    {
+      "path": "full-decode-stream/hls/full_decode.cpp",
+      "bytes": 15591,
+      "sha256": "648109806fba9b5b401ff78dfa287ad7f82d9475f81cfbc7b43a74303dee707b"
+    },
+    {
+      "path": "full-decode-stream/hls/full_decode.hpp",
+      "bytes": 1572,
+      "sha256": "f73fee3a39d569ebaae115c55b4b238a70e4ac3100495f44bf27bb5e02e12de7"
+    },
+    {
+      "path": "full-decode-stream/host/full_runtime.cpp",
+      "bytes": 8058,
+      "sha256": "79ee9adff168931261ae88fdc259af46f9f8d1f85395392eeda252d2e9e46ad3"
+    },
+    {
+      "path": "full-decode-stream/run_full.sh",
+      "bytes": 196,
+      "sha256": "5dfff1b0c1a5f6512d6e1f167ac0d02964dbde16648a81d29d5669c7a6242cab"
+    },
+    {
+      "path": "full-decode-stream/scripts/deploy_full.py",
+      "bytes": 17587,
+      "sha256": "e8edcdbb2c8f67a7d1d0973e6835265f06d2a25a16ae5be405e94c8cc67db079"
+    },
+    {
+      "path": "full-decode-stream/scripts/full_runtime.py",
+      "bytes": 4043,
+      "sha256": "a10ad2360ab83c47fbe0a6135200533f52ada67d01fe7548439f479c3776eb0e"
+    },
+    {
+      "path": "full-decode-stream/scripts/make_reference.py",
+      "bytes": 4066,
+      "sha256": "61e7785651c3879c17c8528f1f539fca147c53cd3e5886753dff0ad1033831b6"
+    },
+    {
+      "path": "full-decode-stream/scripts/pack_weights.py",
+      "bytes": 5873,
+      "sha256": "516c2056e83b66c5a8c63291862c0aa1c0e9d05817657e5b34e66ce785b79d73"
+    },
+    {
+      "path": "full-decode-stream/scripts/run_full.py",
+      "bytes": 8745,
+      "sha256": "eff9eb25544d4bd5e0af9a7bff17330b2b7a026703aba83e29fda54e79f3cb27"
+    },
+    {
+      "path": "full-decode-stream/scripts/status.py",
+      "bytes": 3168,
+      "sha256": "e2db83e4c0b7cf3a236f42781db19c9354c6b4f24b04e2a6f954f49e8dc2a54f"
+    },
+    {
+      "path": "hls/connectivity.cfg",
+      "bytes": 123,
+      "sha256": "542e222c05ae296e54b194c1bea3eb4cf85956011d998170592e5abf6660928f"
+    },
+    {
+      "path": "hls/gemv.cpp",
+      "bytes": 1367,
+      "sha256": "30647fb6dcd601dbd617a87f5a9a85ba4d6021f891bd2e81b10ba4c3fc5fd021"
+    },
+    {
+      "path": "hls/gemv.hpp",
+      "bytes": 378,
+      "sha256": "4acd3c977c4863caaba77e22091af4cce5607e576caf3d653f9b0c544de90e3f"
+    },
+    {
+      "path": "host/dma_probe.cpp",
+      "bytes": 1837,
+      "sha256": "e139043abe03e490d2309fb72350c3b22ee565c4d314217a83b040e805faa242"
+    },
+    {
+      "path": "host/gemv_probe.cpp",
+      "bytes": 2044,
+      "sha256": "c7e7613020a7504f47f5118ca0b685ca67ac4b54f2c9060a8cd4022d50a0914c"
+    },
+    {
+      "path": "host/linear_runtime.cpp",
+      "bytes": 4692,
+      "sha256": "36d738328d80f230bf1b49db1685084dcaac1d99a7ce451852e8d991f0741c23"
+    },
+    {
+      "path": "host/verify_probe.cpp",
+      "bytes": 1023,
+      "sha256": "70d41fafe6385c98a292eb33d38a6d3cb5a79d9638ac5474609f61d7e410f8ce"
+    },
+    {
+      "path": "requirements-reference.txt",
+      "bytes": 217,
+      "sha256": "96a996514c968c0002ac3bd7f291bd20c3a69b40456839426f005f47c6087c5c"
+    },
+    {
+      "path": "requirements-reproduce.txt",
+      "bytes": 271,
+      "sha256": "9218c2b8b57d52656055f1183f84ff0291cc2b027005843e5841b79a26be9f8c"
+    },
+    {
+      "path": "run_cpu.sh",
+      "bytes": 190,
+      "sha256": "8e2b8e31ac1cee619a7b433b8403364b489c6b2816c4d814a0b4a65947ea1b09"
+    },
+    {
+      "path": "run_hybrid.sh",
+      "bytes": 191,
+      "sha256": "41109b595e2152151b842866a65a58bcfc0719d18b4668c73088d60c5f915311"
+    },
+    {
+      "path": "scripts/auto_deploy.py",
+      "bytes": 19282,
+      "sha256": "d69f41eb80eb0da4b64d14c0a7516dcbd077c0f8d748f583adfd567e83557ef7"
+    },
+    {
+      "path": "scripts/check_clock_metadata.tcl",
+      "bytes": 554,
+      "sha256": "5325bfa9fa2f6dd8b92f98d0c1c614229f2a16c703bd10f34ab1804aa2236a49"
+    },
+    {
+      "path": "scripts/check_routed_bus_skew.tcl",
+      "bytes": 437,
+      "sha256": "a05c8d08e2db6c4a60a20c8d5ccf757ca3d291bbd6a458e8d4ffe3fcc4a44c39"
+    },
+    {
+      "path": "scripts/check_u55c_clock.tcl",
+      "bytes": 462,
+      "sha256": "56bd012ef46921e391a0741e4f9ce6404be44b90127b13742b8fd7c6e8fd7e07"
+    },
+    {
+      "path": "scripts/configure.py",
+      "bytes": 4306,
+      "sha256": "4392902ed6e7c6399a085960065e5080d7bc79d82b3adb095d354b985f333558"
+    },
+    {
+      "path": "scripts/deployment_status.py",
+      "bytes": 5345,
+      "sha256": "2154031bae72a2a255f42e06fc153cd3d621c7e9c53ee432672a8f5dcc3af02d"
+    },
+    {
+      "path": "scripts/export_github.py",
+      "bytes": 3413,
+      "sha256": "3712df0f650b766748cbe9075aa447fbc40330dfae3868524b65a92df824b40d"
+    },
+    {
+      "path": "scripts/export_weights.py",
+      "bytes": 9739,
+      "sha256": "69301bc438f5f00e6c26259779af773168aa829deebe36e493215192c0343bb5"
+    },
+    {
+      "path": "scripts/infer_hybrid.py",
+      "bytes": 5810,
+      "sha256": "054aaac439d1dc7450d2f2e376fc277585d90c4fba0eb666bcc303d44392d04f"
+    },
+    {
+      "path": "scripts/infer_local.py",
+      "bytes": 2174,
+      "sha256": "bd4e60a37f9a4824d188bef49a7c04181ea6b819b9f03c28eef50b139c5dbef3"
+    },
+    {
+      "path": "scripts/native_linear.py",
+      "bytes": 3991,
+      "sha256": "ec9afabe0d0cf309114e35af2d1258617abc4857c2dd39e7a47593db6d8d8175"
+    },
+    {
+      "path": "scripts/preflight.py",
+      "bytes": 1510,
+      "sha256": "02d172355a8873967ad143eeee9335bc737c9061c0655dd166e09de575c659af"
+    },
+    {
+      "path": "scripts/python_exec.sh",
+      "bytes": 442,
+      "sha256": "5871b519eed1d8430104c20350c3e20ff725a0be0f8b08c1d31a29686b19e81b"
+    },
+    {
+      "path": "scripts/reference.py",
+      "bytes": 4585,
+      "sha256": "c5f69ff80c5e0855d43553fb9987e592cf967127c90de1b823bbd9bf9cab3c92"
+    },
+    {
+      "path": "scripts/setup_vitis.sh",
+      "bytes": 1818,
+      "sha256": "09b5f3363afab39cbe82b8ef693248866e39610006546ae4e1abc81e106b3daa"
+    },
+    {
+      "path": "scripts/use_vendor_clock_adapter.py",
+      "bytes": 3859,
+      "sha256": "db72725142975ffc5b6e44b252058afb5238f0c54ada1afeec90eba7ba6d22e8"
+    },
+    {
+      "path": "scripts/use_vendor_clock_adapter.tcl",
+      "bytes": 1248,
+      "sha256": "679b415e94310051e6f5c541cf2470ef0cf160ff58848408c1cd493b7f543459"
+    },
+    {
+      "path": "scripts/validate_fpga_runtime.py",
+      "bytes": 2461,
+      "sha256": "6714c734f9246fa5d84f497c1eaaa8f2290a5cbb250f34379071164b54b889cf"
+    },
+    {
+      "path": "scripts/validate_real_gemv.py",
+      "bytes": 4192,
+      "sha256": "f808901e6f0858b0857cbafb22ef54b2ef1d016c3554631443fbd743a516e8b7"
+    },
+    {
+      "path": "tests/gemv_test.cpp",
+      "bytes": 1826,
+      "sha256": "e90788c814d369c1ce21b096135b0dfda70944667e2b17cdeaf6fd614b31210f"
+    },
+    {
+      "path": "tests/test_auto_deploy.py",
+      "bytes": 5300,
+      "sha256": "d47a5c4d9231b9335abb6c804944670763ae4eaee177fa62cb24491d3d8da42b"
+    },
+    {
+      "path": "tests/test_export.py",
+      "bytes": 5408,
+      "sha256": "b03ea6dcd7e93ca3177aad78a06a10907bd66c1d321a7b7ba939934656bcefa3"
+    },
+    {
+      "path": "tests/test_native_runtime.py",
+      "bytes": 2783,
+      "sha256": "2ff8f23a430c328a9f6d639bdb9cb4c700ed35982d6c53ed9e19464d351d4754"
+    }
+  ]
+}
