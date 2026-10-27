@@ -10,6 +10,9 @@ from zoneinfo import ZoneInfo
 from auto_deploy import process_identity, log_tail
 
 root = Path(__file__).resolve().parents[1]
+if '--model' in sys.argv:
+    runpy.run_path(str(root/'full-decode-stream/scripts/status.py'),run_name='__main__')
+    raise SystemExit(0)
 if not any(flag in sys.argv for flag in ["--hybrid", "--baseline", "--previous"]) and (root / "full-decode-stream/reports/status.json").is_file():
     runpy.run_path(str(root / "full-decode-stream/scripts/status.py"), run_name="__main__")
     raise SystemExit(0)

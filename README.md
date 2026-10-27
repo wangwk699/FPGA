@@ -1,6 +1,10 @@
 # FPGA
 
-Qwen3-0.6B / Alveo U55C 浮点部署工程。
+Qwen3-0.6B / Qwen3-1.7B / Alveo U55C 浮点部署工程。
+
+两种模型均已在 U55C 上完成实机数值验收，1.7B 增量 Decode 约 **3.46 token/s**。
+
+模型选择入口：[`--model` 使用说明](docs/MULTI-MODEL.md)。省略参数时继续使用 0.6B；每种模型的权重、原生库、HBM 配置和位流分别绑定。
 
 **同服务器用户复用 `/home/share` 的模型、AMD 工具、平台及位流，激活已有 `llm` 环境后按 [共享资源部署清单](docs/ISOLATED-USER-CHECKLIST.md) 操作。**
 

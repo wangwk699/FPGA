@@ -21,7 +21,7 @@ def source_files():
                                 ("docs", {".md"})]:
         selected.update(p for p in (ROOT / directory).rglob("*")
                         if p.is_file() and not p.is_symlink() and p.suffix in suffixes and "__pycache__" not in p.parts)
-    selected.update((ROOT / "config").glob("*.example.*"))
+    selected.update((ROOT / "config").rglob("*.example.*"))
     evidence = ROOT / "docs/evidence/benchmark-summary.json"
     if evidence.is_file():
         selected.add(evidence)

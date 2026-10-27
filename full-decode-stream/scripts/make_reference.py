@@ -3,26 +3,31 @@
 import argparse
 import json
 import os
+import sys
 from pathlib import Path
 
 os.environ["HF_HUB_OFFLINE"] = "1"
 os.environ["TRANSFORMERS_OFFLINE"] = "1"
 PROJECT = Path(__file__).resolve().parents[1]
+sys.path.insert(0,str(PROJECT.parent/'scripts'))
+from model_profiles import PROFILES, canonical_model, load_config, project_path
 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--model',type=canonical_model,choices=PROFILES,default='Qwen3-0.6B')
     parser.add_argument("--prompt", default="请用一句话介绍杭州。")
     parser.add_argument("--max-new-tokens", type=int, default=32)
-    parser.add_argument("--output", type=Path, default=PROJECT / "reference/default")
+    parser.add_argument("--output", type=Path)
     args = parser.parse_args()
+    args.output=args.output or project_path(PROJECT.parent,args.model)/'reference/default'
     if args.output.exists():
         raise SystemExit(f"Reference directory already exists: {args.output}")
     import numpy as np
     import torch
     from transformers import AutoModelForCausalLM, AutoTokenizer
     torch.set_num_threads(4)
-    deployment = json.loads((PROJECT.parent / "deployment.json").read_text())
+    deployment = load_config(PROJECT.parent,args.model)
     model_path = deployment["model_snapshot"]
     tokenizer = AutoTokenizer.from_pretrained(model_path, local_files_only=True)
     model = AutoModelForCausalLM.from_pretrained(model_path, dtype=torch.float32,
@@ -65,7 +70,7 @@ def main():
     if "first_decode_logits" not in arrays:
         raise RuntimeError("Reference prompt produced EOS before an incremental decode step")
     report = {"execution": "pytorch_cpu_fp32_reference", "quantized": False,
-        "prompt": args.prompt, "input_ids": inputs["input_ids"][0].tolist(),
+        "model_id":deployment['model_id'],"prompt": args.prompt, "input_ids": inputs["input_ids"][0].tolist(),
         "generated_ids": generated, "max_new_tokens": args.max_new_tokens,
         "answer": tokenizer.decode(generated, skip_special_tokens=True),
         "eos_token_ids": sorted(eos), "model": model_path, "revision": deployment["revision"],

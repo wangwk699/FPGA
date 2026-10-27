@@ -11,27 +11,41 @@ import json
 import os
 import sys
 import time
+import subprocess
 from pathlib import Path
 
 os.environ["HF_HUB_OFFLINE"] = "1"
 os.environ["TRANSFORMERS_OFFLINE"] = "1"
 PROJECT = Path(__file__).resolve().parents[1]
+sys.path.insert(0,str(PROJECT.parent/'scripts'))
+from model_profiles import PROFILES, canonical_model, config_path, expected_shapes, load_config, project_path, verify_bitstream_binding
 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--model',type=canonical_model,choices=PROFILES,default='Qwen3-0.6B')
     parser.add_argument("--backend", choices=["fpga", "cpu-cpp"], default="fpga")
     parser.add_argument("--prompt", default="请用一句话介绍杭州。")
     parser.add_argument("--max-new-tokens", type=int, default=32)
-    parser.add_argument("--weights", type=Path, default=PROJECT / "weights")
+    parser.add_argument("--weights", type=Path)
     parser.add_argument("--xclbin", type=Path, help="Local bitstream, or the configured shared bitstream when no local build exists")
     parser.add_argument("--verify", type=Path)
     parser.add_argument("--report", type=Path)
     args = parser.parse_args()
-    deployment = json.loads((PROJECT.parent / "deployment.json").read_text())
+    root=PROJECT.parent
+    published=root/'config/models'/f'{args.model}.shared.example.json'
+    if args.model!='Qwen3-0.6B' and not config_path(root,args.model).exists() and published.is_file():
+        print(f'Preparing local {args.model} runtime from verified shared artifacts (no downloads).',file=sys.stderr,flush=True)
+        subprocess.run([sys.executable,str(root/'scripts/prepare_model.py'),'--model',args.model,'--shared'],check=True,stdout=sys.stderr)
+    try:
+        deployment = load_config(PROJECT.parent,args.model)
+    except (ValueError,FileNotFoundError) as error:
+        parser.error(str(error))
+    project=project_path(PROJECT.parent,args.model)
+    args.weights=args.weights or project/'weights'
     shared = deployment.get("shared_resources", {})
     if args.xclbin is None:
-        local = PROJECT / "build/hw/qwen_full_decode.xclbin"
+        local = project / "build/hw/qwen_full_decode.xclbin"
         args.xclbin = local if local.is_file() else Path(shared.get("xclbin", str(local)))
     if args.max_new_tokens < 1:
         parser.error("max-new-tokens must be positive")
@@ -41,6 +55,12 @@ def main():
             and args.xclbin.resolve() == Path(shared["xclbin"]).resolve()
             and hashlib.sha256(args.xclbin.read_bytes()).hexdigest() != shared["xclbin_sha256"]):
         parser.error("Shared bitstream SHA256 differs from the configured verified artifact")
+    if args.backend=='fpga':
+        try:
+            verify_bitstream_binding(project,deployment,args.xclbin)
+        except ValueError as error:
+            parser.error(str(error))
+    expected_shapes(args.model,json.loads((Path(deployment['model_snapshot'])/'config.json').read_text()))
     from transformers import AutoTokenizer
     from full_runtime import FullRuntime
     tokenizer = AutoTokenizer.from_pretrained(deployment["model_snapshot"], local_files_only=True)
@@ -57,6 +77,8 @@ def main():
         reference = json.loads((args.verify / "reference.json").read_text())
         if reference["input_ids"] != ids or reference["revision"] != deployment["revision"]:
             parser.error("Reference prompt/model differs from the inference input")
+        if reference.get('model_id',deployment['model_id']) != deployment['model_id']:
+            parser.error('Reference belongs to a different model')
         with np.load(args.verify / "vectors.npz") as arrays:
             vectors = {key: arrays[key].copy() for key in arrays.files}
     checks = []
@@ -84,8 +106,9 @@ def main():
         if not passed:
             raise RuntimeError(f"Full decoder numerical comparison failed: {entry}")
     start = time.perf_counter()
-    print(f"Loading complete model into {args.backend} runtime.", file=sys.stderr, flush=True)
-    runtime = FullRuntime(args.backend, args.weights, args.xclbin, deployment["fpga_device"])
+    print(f"Loading complete {args.model} model into {args.backend} runtime.", file=sys.stderr, flush=True)
+    runtime = FullRuntime(args.backend, args.weights, args.xclbin, deployment["fpga_device"],
+                          project=project,model_name=args.model)
     load_seconds = time.perf_counter() - start
     diagnostic_reads = 0
     try:
@@ -122,7 +145,8 @@ def main():
     finally:
         runtime.close()
     matches = None if reference is None else generated == reference["generated_ids"][:args.max_new_tokens]
-    report = {"backend": args.backend, "fpga_executed": args.backend == "fpga" and calls > 0,
+    report = {"model_id":deployment['model_id'],"model_revision":deployment['revision'],
+        "backend": args.backend, "fpga_executed": args.backend == "fpga" and calls > 0,
         "full_decoder_on_fpga": args.backend == "fpga", "quantized": False,
         "source_dtype": "bfloat16", "compute_dtype": "float32", "layers": 28,
         "fpga_device": deployment["fpga_device"] if args.backend == "fpga" else None,
@@ -137,8 +161,8 @@ def main():
         "kv_cache_bytes": 469762048, "prompt": args.prompt, "input_ids": ids,
         "native_library": str(runtime.library),
         "native_library_sha256": hashlib.sha256(runtime.library.read_bytes()).hexdigest(),
-        "kernel_source_sha256": hashlib.sha256((PROJECT / "hls/full_decode.cpp").read_bytes()
-            + (PROJECT / "hls/full_decode.hpp").read_bytes()).hexdigest(),
+        "kernel_source_sha256": hashlib.sha256((project / "hls/full_decode.cpp").read_bytes()
+            + (project / "hls/full_decode.hpp").read_bytes()).hexdigest(),
         "generated_ids": generated, "answer": tokenizer.decode(generated, skip_special_tokens=True),
         "token_kernel_calls": calls, "layer_evaluations": calls * 28,
         "matches_reference_tokens": matches, "numerical_checks": checks,

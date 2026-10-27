@@ -2,8 +2,8 @@
   "files": [
     {
       "path": ".gitignore",
-      "bytes": 385,
-      "sha256": "24121735ce85f9380fbd75583c86a630bbcfe395c6831fbb9d5a5f4f053748ec"
+      "bytes": 510,
+      "sha256": "d468adb73f18b0d0c6bb7adfbe2013dcc3f575bab7e8eca579c40df7e223c22f"
     },
     {
       "path": "Makefile",
@@ -12,13 +12,18 @@
     },
     {
       "path": "README.md",
-      "bytes": 10844,
-      "sha256": "abde59a8e34b19d9f8bc82dc414c236ef84b7a589899a3868b7a9f3f24f4d1a6"
+      "bytes": 11134,
+      "sha256": "36ab1fbb7a9b44c5ed292e59e01656e840e692ffeeb1bfabdd7f603cd5a81b1e"
     },
     {
       "path": "config/deployment.example.json",
       "bytes": 572,
       "sha256": "c2f0c6ddf1d276fe141a96a261e4a2bfb93889b7bbce5acab37ced8ab69fd3be"
+    },
+    {
+      "path": "config/models/Qwen3-1.7B.shared.example.json",
+      "bytes": 6425,
+      "sha256": "ea40b7ae87ca71259b84c230094c2f2c2e347c504dc0d9be0aa38d83e098af37"
     },
     {
       "path": "config/shared-server.example.json",
@@ -32,8 +37,8 @@
     },
     {
       "path": "docs/FROM-ZERO-TO-GITHUB.md",
-      "bytes": 45795,
-      "sha256": "ba02cf2a62421866a946ab5dfadcaf4a99eced44bbbbda739f8e4aa5a87fcb82"
+      "bytes": 45979,
+      "sha256": "20040fbc80f3c8596fa0e4e33f91eadbe8b46e679bbc64137c8594f26bbdb93c"
     },
     {
       "path": "docs/INSTALL-FPGA-TOOLS.md",
@@ -42,13 +47,18 @@
     },
     {
       "path": "docs/ISOLATED-USER-CHECKLIST.md",
-      "bytes": 7881,
-      "sha256": "944cb1fec1af7aedb452aeb674f6881fc2886f9268dd04d9a08edfb70357bbf5"
+      "bytes": 8212,
+      "sha256": "47d7847fdfa746522b99b9d59382578fe8717136eef330607f114b2f04ac9071"
+    },
+    {
+      "path": "docs/MULTI-MODEL.md",
+      "bytes": 6595,
+      "sha256": "6e0c66cee54f2b273cb823aea6cde249e7680091c25bdd5ff0c87cf075327cb4"
     },
     {
       "path": "docs/evidence/benchmark-summary.json",
-      "bytes": 5955,
-      "sha256": "3182c8990899ad6a940dd7e127836d7eb611310a3642c403f74f4bdffa5a772e"
+      "bytes": 8564,
+      "sha256": "dfe7ca92bdd54443198fe75b2a150b82ba498274380fb903d695a890949f26a5"
     },
     {
       "path": "full-decode/Makefile",
@@ -217,33 +227,33 @@
     },
     {
       "path": "full-decode-stream/scripts/deploy_full.py",
-      "bytes": 17587,
-      "sha256": "e8edcdbb2c8f67a7d1d0973e6835265f06d2a25a16ae5be405e94c8cc67db079"
+      "bytes": 18290,
+      "sha256": "caeab278885073fd8f2b54f5ad6b1bb3fea95280a9242cb5571a9f98e17c9001"
     },
     {
       "path": "full-decode-stream/scripts/full_runtime.py",
-      "bytes": 4043,
-      "sha256": "a10ad2360ab83c47fbe0a6135200533f52ada67d01fe7548439f479c3776eb0e"
+      "bytes": 5176,
+      "sha256": "2ed0d1dc6778fd1318eb0a711c62f2dfbbabf2e150563ef64e2db8141b1d7bce"
     },
     {
       "path": "full-decode-stream/scripts/make_reference.py",
-      "bytes": 4066,
-      "sha256": "61e7785651c3879c17c8528f1f539fca147c53cd3e5886753dff0ad1033831b6"
+      "bytes": 4364,
+      "sha256": "b467a9e514c8dd288199afc26e81f4475adc5862314ec0b76b282ff92aa1aa81"
     },
     {
       "path": "full-decode-stream/scripts/pack_weights.py",
-      "bytes": 5873,
-      "sha256": "516c2056e83b66c5a8c63291862c0aa1c0e9d05817657e5b34e66ce785b79d73"
+      "bytes": 7106,
+      "sha256": "da437a42f0dad2e64c9cda2c5f141392a3a689a25232c2d734eaef5aa5e2939b"
     },
     {
       "path": "full-decode-stream/scripts/run_full.py",
-      "bytes": 9332,
-      "sha256": "ed15445c3d8b043874b2931cf93b2433c92b97bdaeece2f57ae2153419c1565a"
+      "bytes": 10851,
+      "sha256": "6128805873575e9d435edf8f7fde0fd96dfaf5f7bd136a1daaa36bdc66b80cbd"
     },
     {
       "path": "full-decode-stream/scripts/status.py",
-      "bytes": 3168,
-      "sha256": "e2db83e4c0b7cf3a236f42781db19c9354c6b4f24b04e2a6f954f49e8dc2a54f"
+      "bytes": 3454,
+      "sha256": "5ae6ae153dfc2909bb3e0a2581e2f2cc528c6eeac2961a4b1120143ee78e3500"
     },
     {
       "path": "hls/connectivity.cfg",
@@ -332,13 +342,13 @@
     },
     {
       "path": "scripts/deployment_status.py",
-      "bytes": 5345,
-      "sha256": "2154031bae72a2a255f42e06fc153cd3d621c7e9c53ee432672a8f5dcc3af02d"
+      "bytes": 5484,
+      "sha256": "9a524d1bfd8e5fcb09862f0654376799c4a67e54bacb06e6c13d2c1ec3217fd1"
     },
     {
       "path": "scripts/export_github.py",
-      "bytes": 3413,
-      "sha256": "3712df0f650b766748cbe9075aa447fbc40330dfae3868524b65a92df824b40d"
+      "bytes": 3414,
+      "sha256": "d0928d15c8b7c2ed27b05a887834ec3a2d4d0348f4005a8e6b8275a73b5e548c"
     },
     {
       "path": "scripts/export_weights.py",
@@ -356,6 +366,11 @@
       "sha256": "bd4e60a37f9a4824d188bef49a7c04181ea6b819b9f03c28eef50b139c5dbef3"
     },
     {
+      "path": "scripts/model_profiles.py",
+      "bytes": 4366,
+      "sha256": "c3fafba0343dafd44d1577ca478fafbe83df06f8c9ec3d5aa13e6b12640c1998"
+    },
+    {
       "path": "scripts/native_linear.py",
       "bytes": 3991,
       "sha256": "ec9afabe0d0cf309114e35af2d1258617abc4857c2dd39e7a47593db6d8d8175"
@@ -364,6 +379,16 @@
       "path": "scripts/preflight.py",
       "bytes": 1510,
       "sha256": "02d172355a8873967ad143eeee9335bc737c9061c0655dd166e09de575c659af"
+    },
+    {
+      "path": "scripts/prepare_model.py",
+      "bytes": 8038,
+      "sha256": "5215396600945f6158f25b2f893964817a47e5bb6023baaa22794724eb8eff62"
+    },
+    {
+      "path": "scripts/publish_model_artifacts.py",
+      "bytes": 6181,
+      "sha256": "31f20eaa0cbf989cfef2f3831051528960e74a3d947f9f7a8d56c05b6c802f6f"
     },
     {
       "path": "scripts/publish_shared_resources.py",
@@ -392,8 +417,8 @@
     },
     {
       "path": "scripts/use_vendor_clock_adapter.py",
-      "bytes": 3859,
-      "sha256": "db72725142975ffc5b6e44b252058afb5238f0c54ada1afeec90eba7ba6d22e8"
+      "bytes": 3955,
+      "sha256": "cc06dddde44d630fe6e052bfccecf19bae86714ce3456f5701d74444643d21fa"
     },
     {
       "path": "scripts/use_vendor_clock_adapter.tcl",
@@ -429,6 +454,11 @@
       "path": "tests/test_export.py",
       "bytes": 5408,
       "sha256": "b03ea6dcd7e93ca3177aad78a06a10907bd66c1d321a7b7ba939934656bcefa3"
+    },
+    {
+      "path": "tests/test_model_selection.py",
+      "bytes": 4127,
+      "sha256": "72607f3adefa96cb70aa9276e922831cbe78fb18d61d31fc1b8e41f01251a101"
     },
     {
       "path": "tests/test_native_runtime.py",

@@ -4,20 +4,28 @@ import json
 import datetime
 import re
 import sys
+import argparse
 from zoneinfo import ZoneInfo
 from pathlib import Path
 
 PROJECT = Path(__file__).resolve().parents[1]
+ROOT=PROJECT.parent
 sys.path.insert(0, str(PROJECT.parent / "scripts"))
 from auto_deploy import log_tail, process_identity
+from model_profiles import PROFILES,canonical_model,project_path
+
+parser=argparse.ArgumentParser(description=__doc__)
+parser.add_argument('--model',type=canonical_model,choices=PROFILES,default='Qwen3-0.6B')
+args=parser.parse_args()
+PROJECT=project_path(PROJECT.parent,args.model)
 
 path = PROJECT / "reports/status.json"
 if not path.is_file():
     raise SystemExit("Complete-decoder deployment has not started")
 state = json.loads(path.read_text())
 alive = state.get("process_identity") is not None and process_identity(state["pid"]) == state["process_identity"]
-print("Task: Qwen3-0.6B row-interleaved decode and paired-head KV cache optimization")
-print("Verified previous version retained:", PROJECT.parent / "full-decode-fast")
+print("Task:",args.model,"row-interleaved decode and paired-head KV cache")
+print("Other model/previous artifacts retained under:", ROOT)
 print("Status:", "stopped (stale running status)" if state["status"] == "running" and not alive else state["status"])
 print("Stage:", state["stage"])
 print("Updated:", state["updated_at"])

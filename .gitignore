@@ -1,6 +1,9 @@
 .deps/
 .venv/
 models/
+!config/models/
+config/models/*
+!config/models/*.shared.example.json
 weights
 build/
 __pycache__/
@@ -19,6 +22,8 @@ dist/
 deployment.json
 config/local.mk
 config/*.local.txt
+config/models/*.local.json
+full-decode-stream/variants/
 config/vitis-2025.1.txt
 config/vitis-2025.1-hbm.txt
 *.log

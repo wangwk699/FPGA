@@ -15,6 +15,7 @@ PROJECT = Path(__file__).resolve().parents[1]
 ROOT = PROJECT.parent
 sys.path.insert(0, str(ROOT / "scripts"))
 import auto_deploy as supervisor
+from model_profiles import PROFILES, canonical_model, config_path, load_config, project_path
 
 supervisor.ROOT = PROJECT
 supervisor.REPORTS = PROJECT / "reports"
@@ -49,10 +50,12 @@ def save_json(path, value):
     temporary.replace(path)
 
 
-def validate_inference(report, fpga):
+def validate_inference(report, fpga, model=None):
     expected = {"backend": "fpga" if fpga else "cpu-cpp", "quantized": False,
         "layers": 28, "matches_reference_tokens": True, "layer_compute_roundtrips_to_cpu": 0,
         "cpu_model_forward_calls": 0, "kernel_source_sha256": source_digest()}
+    if model and model!='Qwen3-0.6B':
+        expected['model_id']='Qwen/'+model
     if fpga:
         expected.update(fpga_executed=True, full_decoder_on_fpga=True,
             attention_device="fpga", prefill_device="fpga", kv_cache_device="hbm",
@@ -103,11 +106,19 @@ def signoff(pipeline, settings):
 
 
 def main():
+    global PROJECT, REPORTS
     parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--model',type=canonical_model,choices=PROFILES,default='Qwen3-0.6B')
     parser.add_argument("--from-stage", choices=["compile", "link", "resume-link", "verify", "finalize"], default="compile")
     parser.add_argument("--baseline-report", type=Path, help="Optional real FPGA report for a matched speed comparison")
     parser.add_argument("--min-speedup", type=float, default=0.0)
     args = parser.parse_args()
+    PROJECT=project_path(ROOT,args.model)
+    REPORTS=PROJECT/'reports'
+    supervisor.ROOT=PROJECT
+    supervisor.REPORTS=REPORTS
+    supervisor.STATE=REPORTS/'status.json'
+    deployment_path=config_path(ROOT,args.model)
     if args.min_speedup < 0:
         parser.error("min-speedup must be nonnegative")
     if args.min_speedup and not args.baseline_report and not (REPORTS / "baseline.json").is_file():
@@ -126,9 +137,9 @@ def main():
             raise KeyboardInterrupt("Full decoder deployment interrupted")
         signal.signal(signal.SIGTERM, interrupted)
         try:
-            config = json.loads((ROOT / "deployment.json").read_text())
+            config = load_config(ROOT,args.model)
             settings = supervisor.settings_file()
-            validate_inference(json.loads((REPORTS / "full-cpp-validation.json").read_text()), False)
+            validate_inference(json.loads((REPORTS / "full-cpp-validation.json").read_text()), False,args.model)
             pipeline.save(software_full_decoder_verified=True, settings=str(settings))
             if args.from_stage == "compile":
                 pipeline.command("compile_kernel", ["make", "compile"], 3 * 3600, settings)
@@ -168,7 +179,7 @@ def main():
                     "--verify", str(PROJECT / "reference/default"), "--max-new-tokens", "32",
                     "--report", str(result_path)], 3 * 3600)
             result = json.loads(result_path.read_text())
-            validate_inference(result, True)
+            validate_inference(result, True,args.model)
             if result.get("xclbin_sha256") != digest(xclbin):
                 raise RuntimeError("Inference report does not match the current bitstream")
             baseline_path = args.baseline_report
@@ -224,8 +235,10 @@ def main():
                 raise RuntimeError("Loaded FPGA UUID does not match the built bitstream")
             completed = supervisor.timestamp()
             artifact = {"path": str(xclbin), "sha256": digest(xclbin), "uuid": uuid.group(1)}
-            final = {"completed_at": completed, "full_decoder_on_fpga": True, "quantized": False,
+            final = {"model_id":config['model_id'],"completed_at": completed, "full_decoder_on_fpga": True, "quantized": False,
                 "model_revision": config["revision"], "model_file_sha256": config["model_file_sha256"],
+                "model_hash_kind":config.get('model_hash_kind','single_checkpoint_file'),
+                "model_files_sha256":config.get('source_files_sha256'),
                 "fpga_device": config["fpga_device"], "xclbin": artifact,
                 "native_library": {"path": result["native_library"], "sha256": result["native_library_sha256"]},
                 "kernel_source_sha256": source_digest(), "inference_report": str(result_path),
@@ -237,7 +250,7 @@ def main():
                 "performance": performance}
             save_json(REPORTS / "FINAL-DEPLOYMENT.json", final)
             # Re-read to avoid overwriting unrelated configuration changes during the build.
-            config = json.loads((ROOT / "deployment.json").read_text())
+            config = json.loads(deployment_path.read_text())
             config.setdefault("full_decode_baseline", config.get("full_decode"))
             config.setdefault("full_decode_previous_optimized", config.get("full_decode_optimized"))
             config.setdefault("hybrid_deployment", {key: config.get(key) for key in [
@@ -255,7 +268,7 @@ def main():
                 "report": str(REPORTS / "FINAL-DEPLOYMENT.json"), "run": str(PROJECT / "run_full.sh")}
             config["full_decode_optimized"] = {**config["full_decode"], "decode_speedup": speedup,
                 "tokens_per_second": result["incremental_decode_tokens_per_second"]}
-            save_json(ROOT / "deployment.json", config)
+            save_json(deployment_path, config)
             pipeline.save(status="complete", stage="complete", fpga_deployment_complete=True,
                 full_decoder_on_fpga=True, fpga_executed=True, generated_ids_match_reference=True,
                 answer=result["answer"], xclbin=artifact, finished_at=completed,

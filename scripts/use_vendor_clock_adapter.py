@@ -31,6 +31,7 @@ def main():
                (ROOT / "full-decode/_x/link/vivado/vpl").resolve(),
                (ROOT / "full-decode-fast/_x/link/vivado/vpl").resolve(),
                (ROOT / "full-decode-stream/_x/link/vivado/vpl").resolve()}
+    allowed.add((ROOT / "full-decode-stream/variants/Qwen3-1.7B/_x/link/vivado/vpl").resolve())
     if build not in allowed:
         parser.error("Only the hybrid or full-decoder generated VPL directory may be changed")
     project = build.parents[3]
